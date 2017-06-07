@@ -1,21 +1,33 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class BestFirstSearcher<T> extends CommonSearcher<T> {
 	
 	private HashSet<State<T>> closed;
+	HashMap<State<T>,Integer> distances;
 
 	public BestFirstSearcher() {
-		closed = new HashSet<State<T>>();
+		 closed = new HashSet<State<T>>();
+		 distances=new HashMap<>();
+		 openList=new PriorityQueue<>(new Comparator<State<T>>() {
+			@Override
+			public int compare(State<T> arg0, State<T> arg1) {
+				return distances.get(arg0)-distances.get(arg1);
+			}
+		});
 	}
 
 	@Override
-	public Solution<T> search(Searchable<T> s) {
+	public Solution<T> search(Searchable<T> s) throws GoalNotFoundException {
 		openList.add(s.getInitialState());
-		while (!openList.isEmpty()) 
+		
+		while (!openList.isEmpty())
 		{
 			State<T> state = openList.poll();
 			closed.add(state);
@@ -33,37 +45,41 @@ public class BestFirstSearcher<T> extends CommonSearcher<T> {
 						tempState.setCameFromState(state);
 						openList.add(tempState);
 					}
-					else if(tempState.getCost()>state.getCost()+state.backtrace)
+					else if(distances.get(tempState)>distances.get(state)+s.getCostBetween(state, tempState))//if the new path to tempState is better than the previous path to tempState
 					{
-						
+						if(!openList.contains(tempState))
+						{
+							openList.add(tempState);
+						}
+						else
+						{
+							openList.remove(tempState);
+							distances.put(tempState, distances.get(state)+s.getCostBetween(state, tempState));
+							openList.add(tempState);
+						}
 					}
-					/*b. Otherwise, if this new path is better than previous one
-					i. If it is not in OPEN add it to OPEN.
-					ii. Otherwise, adjust its priority in OPEN*/
-					
-					
 				}
 			}
 		}
-		return null;
+		throw new GoalNotFoundException();
 
+	}
+	
+	private void discoverAndPutInfinity(State<T> state)
+	{
+		
 	}
 
 	@Override
-	public Solution<T> backtrace(State<T> goalState) {
+	public Solution<T> backtrace(State<T> goalState,State<T> initialState) {
 		ArrayList<State<T>> pathToVictory = new ArrayList<State<T>>();
+		int cost=0;
 		State<T> tempState = goalState;
 		do {
 			pathToVictory.add(tempState);
-			cost+=
+			cost++;
 			tempState = tempState.getCameFromState();
-		} while (tempState != initialState);
-		return new Solution<>(pathToVictory);
-	}
-
-	@Override
-	public Solution<T> backtrace(State<T> goalState, State<T> initialState) {
-		// TODO Auto-generated method stub
-		return null;
+		} while (tempState.getCameFromState() != null);
+		return new Solution<>(pathToVictory,cost);
 	}
 }

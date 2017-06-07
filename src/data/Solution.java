@@ -9,6 +9,16 @@ public class Solution<T> {
 	public int getCost() {
 		return cost;
 	}
+	
+	
+
+	public Solution(ArrayList<State<T>> pathToVictory, int cost) {
+		super();
+		this.pathToVictory = pathToVictory;
+		this.cost = cost;
+	}
+
+
 
 	public void setCost(int cost) {
 		this.cost = cost;

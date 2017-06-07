@@ -1,9 +1,8 @@
 package data;
 
-public class State<T> implements Comparable<State<T>> {
+public class State<T> {
 	private T layout;
 	private State<T> cameFromState;
-	private int  cost;
 	public T getLayout() {
 		return layout;
 	}
@@ -34,18 +33,5 @@ public class State<T> implements Comparable<State<T>> {
 	@Override
 	public String toString() {
 		return layout.toString();
-	}
-
-	public int getCost() {
-		return cost;
-	}
-
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
-
-	@Override
-	public int compareTo(State<T> o) {
-		return this.getCost()-o.getCost();
 	}
 }

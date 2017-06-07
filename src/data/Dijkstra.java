@@ -32,7 +32,7 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 					return distances.get(o1)-distances.get(o2);
 				}
 			});
-			neighbors=(PriorityQueue<State<T>>)s.getAllPossibleStates(openList.pop());
+			neighbors=(PriorityQueue<State<T>>)s.getAllPossibleStates(openList.poll());
 			putAllInf(s,distances);
 			discoverAndPutInfinity(neighbors);//if visited, what is cost?	
 			State<T> minState=neighbors.remove();
@@ -110,8 +110,7 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 		return new Solution<>(pathToVictory);
 	}
 }
-	
-}
+
 
 
 
