@@ -64,11 +64,6 @@ public class BestFirstSearcher<T> extends CommonSearcher<T> {
 		throw new GoalNotFoundException();
 
 	}
-	
-	private void discoverAndPutInfinity(State<T> state)
-	{
-		
-	}
 
 	@Override
 	public Solution<T> backtrace(State<T> goalState,State<T> initialState) {

@@ -34,17 +34,17 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 			});
 			neighbors=(PriorityQueue<State<T>>)s.getAllPossibleStates(openList.poll());
 			putAllInf(s,distances);
-			discoverAndPutInfinity(neighbors);//if visited, what is cost?	
+			//discoverAndPutInfinity(neighbors);
 			State<T> minState=neighbors.remove();
 			openList.remove(minState);
 			for (State<T> neighborState : neighbors) {
 				if(distances.containsKey(minState))
 				{
-					int alt=distances.get(minState)+ s.getCostBetween(minState, neighborState);
-					if(alt<distances.get(neighborState))
+					int newDistance=distances.get(minState)+ s.getCostBetween(minState, neighborState);
+					if(distances.get(neighborState)>newDistance)
 					{
 						neighborState.setCameFromState(minState);
-						distances.put(neighborState, alt);
+						distances.put(neighborState, newDistance);
 						
 					}
 				}
@@ -66,7 +66,8 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 		State<T> z=s.getInitialState();
 		visited.add(z);
 		for (State<T> state : visited) {
-			
+			distances.put(state, Integer.MAX_VALUE);
+			numOfEvaluatedNodes++;
 		}
 	}
 	private State<T> chooseCheapestState(Collection<State<T>> s,Searchable<T> searchable)
@@ -88,17 +89,18 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 	{
 		return numOfEvaluatedNodes;
 	}
-	private void discoverAndPutInfinity(Collection<State<T>> neighbors)
-	{
-		numOfEvaluatedNodes++;
-		for (State<T> state : neighbors) {
-			if(!openList.contains(state) && !closed.contains(state))
-			{
-				distances.put(state, Integer.MAX_VALUE);
-				openList.add(state);
-			}
-		}
-	}//SAGUR
+//	private void discoverAndPutInfinity(Collection<State<T>> neighbors)
+//	{
+//		for (State<T> state : neighbors) {
+//			if(!openList.contains(state) && !closed.contains(state))
+//			{
+//				distances.put(state, Integer.MAX_VALUE);
+//				openList.add(state);
+//			}
+//		}
+//	}
+	
+	//SAGUR
 	@Override
 	public Solution<T> backtrace(State<T> goalState, State<T> initialState) {
 		ArrayList<State<T>> pathToVictory = new ArrayList<State<T>>();
