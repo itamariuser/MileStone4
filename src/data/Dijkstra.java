@@ -40,7 +40,7 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 			for (State<T> neighborState : neighbors) {
 				if(distances.containsKey(minState))
 				{
-					int newDistance=distances.get(minState)+ s.getCostBetween(minState, neighborState);
+					int newDistance=distances.get(minState)+ neighborState.getCostFromParent();
 					if(distances.get(neighborState)>newDistance)
 					{
 						neighborState.setCameFromState(minState);
@@ -50,7 +50,7 @@ public class Dijkstra<T> extends CommonSearcher<T> {
 				}
 				else
 				{
-					int alt=s.getCostBetween(minState, neighborState);
+					int alt=neighborState.getCostFromParent();
 					neighborState.setCameFromState(minState);
 					distances.put(neighborState, alt);
 				}

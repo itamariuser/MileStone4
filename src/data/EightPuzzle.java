@@ -90,32 +90,6 @@ public class EightPuzzle implements Searchable<char[][]> {
 		return tempL;
 	}
 
-	@Override
-	public int getCostBetween(State<char[][]> src, State<char[][]> dest) {
-		//convert dest layout to character array
-		char[][] destLayout=dest.getLayout();
-		Character[][] temp = new Character[sizeY][sizeX];
-		for (int yi = 0; yi < destLayout.length; yi++) {//height
-			for (int xi = 0; xi < destLayout[0].length; xi++) {//width
-				temp[yi][xi]=layout[yi][xi];
-			}
-		}
-		//convert dest layout to ArrayList
-		ArrayList<ArrayList<Character>> list = new ArrayList<ArrayList<Character>>();
-	    for (Character[] array : temp) {
-	    	list.add(new ArrayList<Character>(Arrays.asList(array)));
-	    }
-	    //search characters in src
-	    char[][] srcLayout=src.getLayout();
-	    int cost=0;
-		for (int yi = 0; yi < srcLayout.length; yi++) {//height
-			for (int xi = 0; xi < srcLayout[0].length; xi++) {//width
-				cost+=findIndex(list,srcLayout[yi][xi],xi,yi);
-			}
-		}
-		return cost;
-	}
-
 	private int findIndex(ArrayList<ArrayList<Character>> list,char c,int x,int y)
 	{
 		for (ArrayList<Character> arrayList : list) {

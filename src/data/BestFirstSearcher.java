@@ -38,14 +38,14 @@ public class BestFirstSearcher<T> extends CommonSearcher<T> {
 			else 
 			{
 				Queue<State<T>> nextStates = s.getAllPossibleStates(state);
-				for (State<T> tempState : nextStates) 
+				for (State<T> tempState : nextStates)
 				{
 					if (!closed.contains(tempState) && !openList.contains(tempState)) 
 					{
 						tempState.setCameFromState(state);
 						openList.add(tempState);
 					}
-					else if(distances.get(tempState)>distances.get(state)+s.getCostBetween(state, tempState))//if the new path to tempState is better than the previous path to tempState
+					else if(distances.get(tempState)>distances.get(state)+tempState.getCostFromParent())//if the new path to tempState is better than the previous path to tempState
 					{
 						if(!openList.contains(tempState))
 						{
@@ -54,7 +54,7 @@ public class BestFirstSearcher<T> extends CommonSearcher<T> {
 						else
 						{
 							openList.remove(tempState);
-							distances.put(tempState, distances.get(state)+s.getCostBetween(state, tempState));
+							distances.put(tempState, distances.get(state)+tempState.getCostFromParent());
 							openList.add(tempState);
 						}
 					}

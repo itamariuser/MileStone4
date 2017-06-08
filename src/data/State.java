@@ -2,9 +2,18 @@ package data;
 
 public class State<T> {
 	private T layout;
+	private int costFromParent;
 	private State<T> cameFromState;
 	public T getLayout() {
 		return layout;
+	}
+
+	public int getCostFromParent() {
+		return costFromParent;
+	}
+
+	public void setCostFromParent(int costFromParent) {
+		this.costFromParent = costFromParent;
 	}
 
 	public void setLayout(T layout) {
